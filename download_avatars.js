@@ -1,8 +1,8 @@
-var request = require('request')
-var secrets = require('./secrets.js')
+var request = require('request');
+var secrets = require('./secrets.js');
 
 
-console.log(`Welcome to GitHub Avatar Downloader`)
+console.log(`Welcome to GitHub Avatar Downloader`);
 
 // Implement function
 function getRepoContributors(repoOwner, repoName, callback) {
@@ -13,15 +13,25 @@ function getRepoContributors(repoOwner, repoName, callback) {
       "User-Agent": "MattEmond",
       'Authorization': secrets.GITHUB_TOKEN
     }
-  }
+  };
 
   request(options, function(error, response, body) {
-
-    callback(error, body)
-  })
+    console.log('statusCode:', response && response.statusCode);
+    console.log('body:', body);
+    if (callback) {
+        callback(error, JSON.parse(body));
+    }
+  });
 }
 
 getRepoContributors("jquery", "jquery", function(err, result) {
-  console.log("Errors:", err);
-  console.log("Result:", result);
+  if (err) {
+    console.log(`We have an error`);
+  }
+  result.forEach(function(contributor) {
+    console.log('-------------');
+    console.log("Avatar Name:", contributor.login);
+    console.log("Avatar URL:", contributor.avatar_url);
+  });
+
 });
