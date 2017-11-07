@@ -33,9 +33,10 @@ function downloadImageByURL(url, filePath) {
   .pipe(fs.createWriteStream("./Avatars/"+filePath+".jpg"));
 }
 
+var repoOwner = process.argv[2];
+var repoName = process.argv[3];
 
-
-getRepoContributors(process.argv[2], process.argv[3], function(err, result) {
+function repoCallback(err, result) {
   if (err) {
     console.log(`We have an error`);
   }
@@ -43,9 +44,12 @@ getRepoContributors(process.argv[2], process.argv[3], function(err, result) {
     console.log('-------------');
     console.log("Avatar Name:", contributor.login);
     console.log("Avatar URL:", contributor.avatar_url);
-    downloadImageByURL(contributor.avatar_url, contributor.login)
+    downloadImageByURL(contributor.avatar_url, contributor.login);
   });
-});
+}
+
+
+getRepoContributors(repoOwner, repoName, repoCallback);
 
 
 
