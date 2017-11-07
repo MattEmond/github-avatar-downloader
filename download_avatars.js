@@ -1,5 +1,6 @@
 var request = require('request');
-var secrets = require('./secrets.js');
+require('dotenv').config()
+// var secrets = require('./secrets.js');
 var fs = require('fs')
 
 console.log(`Welcome to GitHub Avatar Downloader`);
@@ -10,8 +11,8 @@ function getRepoContributors(repoOwner, repoName, callback) {
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
-      "User-Agent": "MattEmond",
-      'Authorization': secrets.GITHUB_TOKEN
+      "User-Agent": process.env.DB_USER,
+      'Authorization': process.env.DB_TOKEN
     }
   };
   //  Request function to check if there is any info being bassed to the callbacl.  If there is, we need to parse the body being returned.
